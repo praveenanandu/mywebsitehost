@@ -13,6 +13,11 @@
     <script>
         // Check for Geolocation support
         //var geoId;
+                // (options) => {
+                //   enableHighAccuracy: false,
+                //   timeout: 5000,
+                //   maximumAge: 3000,
+                // }
         
         if (navigator.geolocation) {
             const startTime = performance.now(); // Start a high-resolution timer
@@ -34,7 +39,7 @@
 
                     // Calculate and Display Time Taken
                     const timeTaken = (endTime - startTime).toFixed(2); // Convert to milliseconds and round
-                    document.getElementById("fetch-time").textContent = `Time to fetch location: ${timeTaken} ms<br>timeout : 5000<br>maxAge : 3000`;
+                    document.getElementById("fetch-time").textContent = `Time to fetch location: ${timeTaken} ms`;
                 
                 },
                 // Error callback
@@ -57,11 +62,6 @@
                     document.getElementById("location-info").textContent = errorMessage;
                     document.getElementById("current-time").textContent = ''; // Clear other fields on error
                     document.getElementById("fetch-time").textContent = '';
-                },
-                (options) => {
-                  enableHighAccuracy: false,
-                  timeout: 5000,
-                  maximumAge: 3000,
                 }
             );
         } else {
