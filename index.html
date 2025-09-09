@@ -12,10 +12,12 @@
 
     <script>
         // Check for Geolocation support
+        var geoId;
         if (navigator.geolocation) {
             const startTime = performance.now(); // Start a high-resolution timer
-
-            navigator.geolocation.getCurrentPosition(
+            
+            // navigator.geolocation.getCurrentPosition(
+                geoId = navigator.geolocation.watchPosition(
                 // Success callback
                 (position) => {
                     const endTime = performance.now(); // End the timer
@@ -32,6 +34,7 @@
                     // Calculate and Display Time Taken
                     const timeTaken = (endTime - startTime).toFixed(2); // Convert to milliseconds and round
                     document.getElementById("fetch-time").textContent = `Time to fetch location: ${timeTaken} ms`;
+                    navigator.geolocation.clearWatch(geoId);
                 },
                 // Error callback
                 (error) => {
