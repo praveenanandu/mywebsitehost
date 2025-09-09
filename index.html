@@ -61,7 +61,8 @@
                     document.getElementById("location-info").textContent = errorMessage;
                     document.getElementById("current-time").textContent = ''; // Clear other fields on error
                     document.getElementById("fetch-time").textContent = '';
-                }
+                },
+                options
             );
         } else {
             document.getElementById("location-info").textContent = "Geolocation is not supported by this browser.";
