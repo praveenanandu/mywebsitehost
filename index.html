@@ -13,11 +13,7 @@
     <script>
         // Check for Geolocation support
         //var geoId;
-        const options = {
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: 3000,
-        };
+        
         if (navigator.geolocation) {
             const startTime = performance.now(); // Start a high-resolution timer
             
@@ -62,7 +58,11 @@
                     document.getElementById("current-time").textContent = ''; // Clear other fields on error
                     document.getElementById("fetch-time").textContent = '';
                 },
-                options
+                (options) => {
+                  enableHighAccuracy: false,
+                  timeout: 5000,
+                  maximumAge: 3000,
+                }
             );
         } else {
             document.getElementById("location-info").textContent = "Geolocation is not supported by this browser.";
