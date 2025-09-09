@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Geolocation on Load</title>
+    <title>Geolocation and Time</title>
 </head>
 <body>
 
-    <h1>Fetching Geolocation...</h1>
+    <h1>Fetching Geolocation and Time...</h1>
     <p id="location-data">Waiting for location...</p>
+    <p id="time-data"></p>
 
     <script>
-        // Check if the browser supports the Geolocation API
-        if (navigator.geolocation) {
-            // Use getCurrentPosition() to get the location
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    // Success callback: display the latitude and longitude
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    document.getElementById("location-data").innerHTML = 
-                        `Latitude: ${latitude}<br>Longitude: ${longitude}`;
-                },
-                function(error) {
-                    // Error callback: handle any issues
-                    let errorMessage;
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = "User denied the request for Geolocation.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Location information is unavailable.";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "The request to get user location timed out.";
-                            break;
-                        default:
-                            errorMessage = "An unknown error occurred.";
-                            break;
-                    }
-                    document.getElementById("location-data").innerHTML = errorMessage;
-                }
-            );
-        } else {
-            // Geolocation is not supported by the browser
-            document.getElementById("location-data").innerHTML = "Geolocation is not supported by this browser.";
+        // Function to get and display time
+        function displayTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString(); // Format time based on user's locale
+            document.getElementById("time-data").innerHTML = `Current Time: ${timeString}`;
         }
+
+        // Function to get location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("location-data").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Success callback for location
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById("location-data").innerHTML = 
+                `Latitude: ${latitude}<br>Longitude: ${longitude}`;
+            displayTime(); // Call the time function after getting location
+        }
+
+        // Error callback for location
+        function showError(error) {
+            let errorMessage;
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "The request to get user location timed out.";
+                    break;
+                default:
+                    errorMessage = "An unknown error occurred.";
+                    break;
+            }
+            document.getElementById("location-data").innerHTML = errorMessage;
+            displayTime(); // Also show the time even if location fails
+        }
+
+        // Trigger the process on page load
+        getLocation();
     </script>
 
 </body>
